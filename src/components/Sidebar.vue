@@ -41,6 +41,11 @@ $sidebar-link-bg-color-hover: #e6e6e6;
 .sidebar {
   padding: 1rem;
 
+  @media screen and (min-width: 1024px) {
+    position: sticky;
+    top: 0;
+  }
+
   &__list {
     display: flex;
     flex-direction: column;

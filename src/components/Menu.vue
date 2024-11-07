@@ -1,5 +1,5 @@
 <template>
-  <a href="#" role="button" class="menu__toggle" @click="show">
+  <a href="#" role="button" class="menu-toggle" @click="show">
     <Icon name="menu" size="32" />
   </a>
 

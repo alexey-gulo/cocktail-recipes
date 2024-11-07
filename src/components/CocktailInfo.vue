@@ -11,6 +11,7 @@
         <p class="cocktail-info__item">{{ cocktail.strAlcoholic }}</p>
         <p class="cocktail-info__item">{{ cocktail.strGlass }}</p>
       </div>
+
       <div class="cocktail-info__group">
         <div class="cocktail-info__item">Instructions:</div>
 
