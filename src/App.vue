@@ -1,6 +1,24 @@
 <template>
   <div>
-    <h1>Cocktail recipes</h1>
+    <RouterView />
   </div>
 </template>
 
+<script setup lang="ts">
+import { RouterView } from 'vue-router'
+</script>
+
+<style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: "Roboto", sans-serif;
+}
+</style>
