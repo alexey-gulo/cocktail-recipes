@@ -50,9 +50,9 @@ defineProps<{
 
 // Methods
 const calcIngredientsRange = (cocktail: Cocktail): number => {
-  const keys = Object.keys(cocktail)
+  const keys: string[] = Object.keys(cocktail)
   const filteredKeys: string[] = keys.filter((key: string) => key.includes('strIngredient'))
-  const filteredKeysWithValue = filteredKeys.filter((key: string) => !!cocktail[key as keyof Cocktail])
+  const filteredKeysWithValue: string[] = filteredKeys.filter((key: string) => !!cocktail[key as keyof Cocktail])
 
   return filteredKeysWithValue.length
 }

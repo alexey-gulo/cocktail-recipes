@@ -15,15 +15,16 @@ import type { Props } from '@/types/icon'
 
 const props = withDefaults(defineProps<Props>(), {
   width: '24',
-  height: '24'
+  height: '24',
+  class: ''
 })
 
 // Hooks
-const componentClass = computed(() => {
+const componentClass = computed((): string[] => {
   return [
     'icon',
     props.class
   ]
 })
-const fullUrl = computed(() => `${iconUrl}#${props.name}Icon`)
+const fullUrl = computed((): string => `${iconUrl}#${props.name}Icon`)
 </script>

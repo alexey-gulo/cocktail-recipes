@@ -1,35 +1,74 @@
 import { defineStore } from 'pinia'
 import { useRoute } from 'vue-router'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { Cocktail, CocktailCode } from '@/types/cocktail'
 import { fetchCocktail } from '@/services/cocktail'
 
 export const useCocktailStore = defineStore('cocktail', () => {
   const route = useRoute()
+  const isLoading = ref<boolean>(false)
+  const error = ref<string | null>(null)
   const cache = ref<Record<string, Cocktail[]>>({})
 
-  const currentCocktailCode = computed(() => route.params.cocktailCode)
-  const currentCocktail = computed(() => {
-    return cache.value[currentCocktailCode.value as CocktailCode]
+  const currentCocktailParam = computed((): CocktailCode => {
+    if (Array.isArray(route.params.cocktailCode)) {
+      return route.params.cocktailCode[0] as CocktailCode
+    } else {
+      return route.params.cocktailCode as CocktailCode
+    }
   })
-  const isCurrentCocktailCached = computed(() => {
-    return !!cache.value[currentCocktailCode.value as CocktailCode]
+  const currentDrinks = computed((): Cocktail[] => {
+    return cache.value[currentCocktailParam.value as CocktailCode]
   })
+  const isCurrentCocktailCached = computed((): boolean => {
+    return Boolean(cache.value[currentCocktailParam.value as CocktailCode])
+  })
+
+  onMounted(() => fetchCurrentCocktail(currentCocktailParam.value))
 
   watch(
-    currentCocktailCode,
+    currentCocktailParam,
     async (cocktailCode) => {
-      if (!isCurrentCocktailCached.value) {
-        const drinks = await fetchCocktail(cocktailCode as CocktailCode)
-        cache.value[currentCocktailCode.value as CocktailCode] = drinks
-      }
-    },
-    { immediate: true }
+      if (isCurrentCocktailCached.value) return
+
+      await fetchCurrentCocktail(cocktailCode)
+    }
   )
 
+  // Methods
+  const fetchCurrentCocktail = async (cocktailCode: CocktailCode): Promise<void> => {
+    clearError()
+    startLoading()
+
+    try {
+      const drinks = await fetchCocktail(cocktailCode as CocktailCode)
+      cache.value[currentCocktailParam.value as CocktailCode] = drinks
+    } catch (error) {
+      setError((error as Error).message)
+    }
+
+    stopLoading()
+  }
+
+  const startLoading = (): void => {
+    isLoading.value = true
+  }
+
+  const stopLoading = (): void => {
+    isLoading.value = false
+  }
+
+  const setError = (message: string): void => {
+    error.value = message
+  }
+
+  const clearError = (): void => {
+    error.value = null
+  }
+
   return {
-    cache,
-    currentCocktail,
-    isCurrentCocktailCached
+    currentDrinks,
+    isLoading,
+    error
   }
 })

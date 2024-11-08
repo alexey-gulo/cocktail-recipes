@@ -23,7 +23,7 @@ import { CocktailCode } from '../types/cocktail'
 import { cocktails } from '@/config/cocktails'
 
 // Hooks
-const cocktailsRef = ref(cocktails)
+const cocktailsRef = ref<CocktailCode[]>(cocktails)
 
 // Methods
 const prepareTitle = (cocktailCode: CocktailCode): string => {

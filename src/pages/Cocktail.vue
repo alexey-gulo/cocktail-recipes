@@ -2,8 +2,13 @@
   <Layout>
     <Container>
       <Transition name="fade">
-        <CocktailInfo v-if="currentCocktail" :drinks="currentCocktail" />
-        <Spinner v-else />
+        <Alert v-if="error">{{ error }}</Alert>
+
+        <Spinner v-else-if="isLoading" />
+
+        <div v-else-if="currentDrinks">
+          <CocktailInfo :drinks="currentDrinks" />
+        </div>
       </Transition>
     </Container>
   </Layout>
@@ -17,16 +22,17 @@ import Layout from '@/components/Layout.vue'
 import CocktailInfo from '@/components/CocktailInfo.vue'
 import Container from '@/components/Container.vue'
 import Spinner from '@/components/Spinner.vue'
+import Alert from '@/components/Alert.vue'
 
 // Stores
 const cocktailStore = useCocktailStore()
-const { currentCocktail } = storeToRefs(cocktailStore)
+const { currentDrinks, isLoading, error } = storeToRefs(cocktailStore)
 </script>
 
 <style lang="scss">
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.15s ease;
+  transition: opacity 0.2s ease;
 }
 
 .fade-enter-from,

@@ -24,11 +24,11 @@ import Icon from '@/components/Icon.vue'
 const active = ref<boolean>(false)
 
 // Methods
-const show = () => {
+const show = (): void => {
   active.value = true
 }
 
-const hide = () => {
+const hide = (): void => {
   active.value = false
 }
 </script>
